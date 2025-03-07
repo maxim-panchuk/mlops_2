@@ -1,4 +1,4 @@
-name: Test and Verify
+name: Test and Verify CD
 
 on:
   repository_dispatch:
@@ -45,7 +45,7 @@ jobs:
     - name: Run functional tests
       run: |
         # Устанавливаем зависимости для тестов
-        pip install -r tests/requirements.txt
+        pip install -r requirements.txt
         
         # Запускаем функциональные тесты
         python -m pytest tests/test_functional.py -v
