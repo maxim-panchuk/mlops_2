@@ -32,7 +32,7 @@ jobs:
 
     - name: Wait for services to start
       run: |
-        sleep 30  # Даем время на инициализацию сервисов
+        sleep 30
 
     - name: Check running containers
       run: |
@@ -44,10 +44,8 @@ jobs:
 
     - name: Run functional tests
       run: |
-        # Устанавливаем зависимости для тестов
         pip install -r requirements.txt
         
-        # Запускаем функциональные тесты
         python -m pytest tests/test_functional.py -v
 
     - name: Cleanup
