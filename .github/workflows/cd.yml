@@ -1,4 +1,4 @@
-name: Test and Verify
+name: Test and Verify CD
 
 on:
   repository_dispatch:
