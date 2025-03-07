@@ -26,9 +26,9 @@ jobs:
       run: |
         docker pull ${DOCKER_IMAGE}:latest
 
-    - name: Start the services using docker-compose
+    - name: Start the services using docker compose
       run: |
-        docker-compose up -d
+        docker compose up -d
 
     - name: Wait for services to start
       run: |
@@ -36,11 +36,11 @@ jobs:
 
     - name: Check running containers
       run: |
-        docker-compose ps
+        docker compose ps
 
     - name: Check logs
       run: |
-        docker-compose logs app
+        docker compose logs app
 
     - name: Run functional tests
       run: |
@@ -52,5 +52,5 @@ jobs:
 
     - name: Cleanup
       run: |
-        docker-compose down
+        docker compose down
         docker system prune -f

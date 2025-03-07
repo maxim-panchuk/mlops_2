@@ -36,19 +36,16 @@ jobs:
         echo "TAG=${SHA_SHORT}" >> $GITHUB_ENV
         echo "tag=${SHA_SHORT}" >> $GITHUB_OUTPUT
 
-    - name: Build with docker-compose
+    - name: Build with docker compose
       run: |
-        docker-compose build
+        docker compose build
 
     - name: Tag the image
       run: |
-        docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${{ env.TAG }}
         docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${{ github.ref_name }}
 
     - name: Push to DockerHub
       run: |
-        docker push ${DOCKER_IMAGE}:latest
-        docker push ${DOCKER_IMAGE}:${{ env.TAG }}
         docker push ${DOCKER_IMAGE}:${{ github.ref_name }}
 
     - name: Trigger CD workflow
