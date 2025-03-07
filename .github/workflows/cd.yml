@@ -2,14 +2,14 @@ name: Test and Verify
 
 on:
   repository_dispatch:
-    types: [cd]
-  workflow_dispatch:
+    types: 
+      - cd
 
 env:
   DOCKER_IMAGE: panchesco13/banknote-classifier
 
 jobs:
-  test:
+  cd:
     runs-on: ubuntu-latest
     
     steps:
