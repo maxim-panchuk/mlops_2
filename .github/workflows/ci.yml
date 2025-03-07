@@ -29,25 +29,27 @@ jobs:
         docker info
         docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Extract metadata for Docker
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.DOCKER_IMAGE }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=sha,format=long
+    - name: Generate tag
+      id: tag
+      run: |
+        SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)
+        echo "TAG=${SHA_SHORT}" >> $GITHUB_ENV
+        echo "tag=${SHA_SHORT}" >> $GITHUB_OUTPUT
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+    - name: Build with docker-compose
+      run: |
+        docker-compose build
+
+    - name: Tag the image
+      run: |
+        docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${{ env.TAG }}
+        docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${{ github.ref_name }}
+
+    - name: Push to DockerHub
+      run: |
+        docker push ${DOCKER_IMAGE}:latest
+        docker push ${DOCKER_IMAGE}:${{ env.TAG }}
+        docker push ${DOCKER_IMAGE}:${{ github.ref_name }}
 
     - name: Trigger CD workflow
       run: |
