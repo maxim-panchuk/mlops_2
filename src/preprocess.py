@@ -4,16 +4,15 @@ from typing import Tuple
 from src.logger import Logger
 
 class Preprocessor:
-    def __init__(self, data_path: str, logger: Logger):
+    def __init__(self, data_path: str):
         """
         Initialize Preprocessor with data path
         
         Args:
             data_path: Path to the CSV file
-            logger: Logger instance
         """
         self.data_path = data_path
-        self.logger = logger
+        self.logger = Logger(name="Preprocessor")
         self.logger.info(f"Initialized Preprocessor with data path: {data_path}")
 
     def load_data(self) -> pd.DataFrame:
