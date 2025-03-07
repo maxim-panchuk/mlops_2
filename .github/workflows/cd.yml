@@ -2,7 +2,7 @@ name: Test and Verify
 
 on:
   repository_dispatch:
-    types: [cd-trigger]
+    types: [cd]
   workflow_dispatch:
 
 env:
