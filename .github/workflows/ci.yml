@@ -29,24 +29,10 @@ jobs:
         docker info
         docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Generate tag
-      id: tag
-      run: |
-        SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)
-        echo "TAG=${SHA_SHORT}" >> $GITHUB_ENV
-        echo "tag=${SHA_SHORT}" >> $GITHUB_OUTPUT
-
-    - name: Build with docker compose
+    - name: Build and push Docker image
       run: |
         docker compose build
-
-    - name: Tag the image
-      run: |
-        docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${{ github.ref_name }}
-
-    - name: Push to DockerHub
-      run: |
-        docker push ${DOCKER_IMAGE}:${{ github.ref_name }}
+        docker push ${DOCKER_IMAGE}:latest
 
     - name: Trigger CD workflow
       run: |
