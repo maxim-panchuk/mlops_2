@@ -2,11 +2,12 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import joblib
-import logging
 import numpy as np
 import pandas as pd
 from src.config import Config
 from src.logger import Logger
+from src.database.mongodb import MongoDB
+import os
 
 class InputData(BaseModel):
     variance: float
@@ -24,6 +25,7 @@ class APIServer:
         )
         self.model = self._load_model()
         self.app = self._create_app()
+        self.db = MongoDB()
 
     def _load_model(self):
         model_path = self.config.get_train_config()['model_path']
@@ -61,6 +63,8 @@ class APIServer:
                     "prediction": int(prediction[0]),
                     "probability": float(np.max(prediction_proba[0]))
                 }
+
+                self.db.save_model_result('banknote_predictions', int(prediction[0]))
                 
                 self.logger.info(f"Prediction made: {result}")
                 return result
@@ -82,4 +86,8 @@ class APIServer:
 
 if __name__ == "__main__":
     server = APIServer()
-    server.run()
+    server.run(host="0.0.0.0", port=8080)
+
+# Создаем экземпляр сервера и делаем приложение доступным на уровне модуля
+# server = APIServer()
+# app = server._app
