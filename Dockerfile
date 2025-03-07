@@ -20,4 +20,4 @@ RUN mkdir -p logs
 EXPOSE 8080
 
 # Command to run the application
-CMD ["uvicorn", "src.server:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["python", "-m", "src.server"]
