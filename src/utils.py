@@ -17,7 +17,7 @@ class ModelUtils:
         """
         Output classification_report.
         
-        Args:
+        Arg:
             model: Trained model
             X_test: Test features
             y_test: Test target
