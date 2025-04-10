@@ -4,17 +4,26 @@ import pandas as pd
 from typing import Dict, Any
 from src.logger import Logger
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+class ModelUtils:
+    def __init__(self):
+        """
+        Initialize ModelUtils with configuration
+        """
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
+        self.output_file = self.config['train']['output_file']
 
-output_file = config['train']['output_file']
-
-def evaluate(model, X_test, y_test):
-    """
-    Output classification_report.
-    """
-    pred = model.predict(X_test)
-    print(classification_report(y_test, pred))
+    def evaluate(self, model, X_test, y_test):
+        """
+        Output classification_report.
+        
+        Arg:
+            model: Trained model
+            X_test: Test features
+            y_test: Test target
+        """
+        pred = model.predict(X_test)
+        print(classification_report(y_test, pred))
 
 
 class ModelEvaluator:

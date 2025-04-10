@@ -34,7 +34,7 @@ jobs:
       run: |
         sleep 30  # Даем время на инициализацию сервисов
 
-    - name: Check running containers
+    - name: Check containers
       run: |
         docker compose ps
 

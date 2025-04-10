@@ -1,6 +1,6 @@
 from src.preprocess import Preprocessor, split_data
 from src.train import ModelTrainer
-from src.utils import evaluate
+from src.utils import ModelUtils
 from src.config import Config
 from src.logger import setup_logger
 import logging
@@ -53,7 +53,8 @@ logger.info(f"Tree structure exported to {train_config['output_file']}")
 
 # 4. Evaluation
 logger.info("Evaluating model performance")
-evaluate(model, X_test, y_test)
+model_utils = ModelUtils()
+model_utils.evaluate(model, X_test, y_test)
 
 # 5. Save model
 logger.info(f"Saving model to {train_config['model_path']}")
